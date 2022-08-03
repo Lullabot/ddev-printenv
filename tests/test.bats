@@ -24,9 +24,12 @@ teardown() {
   echo "# ddev get ${DIR} with project ${PROJNAME} in ${TESTDIR} ($(pwd))" >&3
   ddev get ${DIR}
   ddev restart
-  # Do something here to verify functioning extra service
-  # For extra credit, use a real CMS with actual config.
-  # ddev exec "curl -s elasticsearch:9200" | grep "${PROJNAME}-elasticsearch"
+  ddev printenv
+  ddev printenv --obfuscate | grep -e '^COMPOSER_CACHE_DIR=oser$'
+  ddev printenv COMPOSER_CACHE_DIR | grep -e '^/mnt/ddev-global-cache/composer$'
+  ddev printenv --obfuscate COMPOSER_CACHE_DIR | grep -e '^oser$'
+  ddev printenv --service db | grep -e '^MYSQL_HISTFILE'
+  ddev printenv --service db --obfuscate MYSQL_HISTFILE | grep -e '^tory$'
 }
 
 @test "install from release" {
