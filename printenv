@@ -1,0 +1,65 @@
+#!/bin/bash
+
+## Description: Print environment variables, optionally obfuscating them to their last four characters.
+## Usage: printenv [-o|--obfuscate] [-s|--service] [variable name...]
+## Example: "ddev printenv" or "ddev printenv DDEV_DOCROOT" or "ddev printenv -s web -o BLACKFIRE_SERVER_TOKEN"
+
+while :; do
+     case ${1:-} in
+         -h|-\?|--help)
+             show_help
+             exit
+             ;;
+         -o|--obfuscate)
+            OBFUSCATE=1
+             ;;
+         -s|--service)
+           shift
+           SERVICE=${1:-}
+           ;;
+         -j|--json-output)
+             echo "JSON output is not supported."
+             exit 1
+             ;;
+
+         --)              # End of all options.
+             shift
+             break
+             ;;
+         -?*)
+             printf 'WARN: Unknown option (ignored): %s\n' "$1" >&2
+             ;;
+         *)               # Default case: No more options, so break out of the loop.
+             break
+     esac
+
+     shift
+ done
+
+if [[ -n $SERVICE ]]
+then
+  VARIABLES=$(ddev exec --service $SERVICE printenv "$*")
+else
+  VARIABLES=$(ddev exec printenv "$*")
+fi
+
+if [[ $OBFUSCATE == 1 ]]
+then
+  for variable in $VARIABLES
+  do
+    if [[ -n $* ]]
+    then
+      value=$(echo "$variable" | rev | cut -c -4 | rev)
+      echo "$value"
+    else
+      name=$(echo "$variable" | cut -d= -f1)
+      value=$(echo "$variable" | cut -d= -f2- | rev | cut -c -4 | rev)
+      echo "$name"="$value"
+    fi
+  done
+else
+  for variable in $VARIABLES
+  do
+    echo "$variable"
+  done
+fi
