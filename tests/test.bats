@@ -36,8 +36,14 @@ teardown() {
   set -eu -o pipefail
   cd ${TESTDIR} || ( printf "unable to cd to ${TESTDIR}\n" && exit 1 )
   echo "# ddev get drud/ddev-ddev-printenv with project ${PROJNAME} in ${TESTDIR} ($(pwd))" >&3
-  ddev get drud/ddev-ddev-printenv
+  ddev get lullabot/ddev-ddev-printenv
   ddev restart >/dev/null
+  ddev printenv
+  ddev printenv --obfuscate | grep -e '^COMPOSER_CACHE_DIR=oser$'
+  ddev printenv COMPOSER_CACHE_DIR | grep -e '^/mnt/ddev-global-cache/composer$'
+  ddev printenv --obfuscate COMPOSER_CACHE_DIR | grep -e '^oser$'
+  ddev printenv --service db | grep -e '^MYSQL_HISTFILE'
+  ddev printenv --service db --obfuscate MYSQL_HISTFILE | grep -e '^tory$'
   # Do something useful here that verifies the add-on
   # ddev exec "curl -s elasticsearch:9200" | grep "${PROJNAME}-elasticsearch"
 }
