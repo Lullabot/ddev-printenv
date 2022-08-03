@@ -1,9 +1,9 @@
 #ddev-generated
-# Simple template to demonstrate addon-template
+# Simple template to demonstrate ddev-printenv
 version: '3.6'
 services:
-  addon-template:
-    container_name: ddev-${DDEV_SITENAME}-addon-template
+  ddev-printenv:
+    container_name: ddev-${DDEV_SITENAME}-ddev-printenv
     image: busybox:stable
     command: tail -f /dev/null
     networks: [default, ddev_default]
