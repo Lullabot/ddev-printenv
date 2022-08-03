@@ -1,5 +1,6 @@
 #!/bin/bash
 
+## #ddev-generated
 ## Description: Print environment variables, optionally obfuscating them to their last four characters.
 ## Usage: printenv [-o|--obfuscate] [-s|--service] [variable name...]
 ## Example: "ddev printenv" or "ddev printenv DDEV_DOCROOT" or "ddev printenv -s web -o BLACKFIRE_SERVER_TOKEN"
