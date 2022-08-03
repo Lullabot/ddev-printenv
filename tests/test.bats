@@ -35,8 +35,8 @@ teardown() {
 @test "install from release" {
   set -eu -o pipefail
   cd ${TESTDIR} || ( printf "unable to cd to ${TESTDIR}\n" && exit 1 )
-  echo "# ddev get drud/ddev-ddev-printenv with project ${PROJNAME} in ${TESTDIR} ($(pwd))" >&3
-  ddev get lullabot/ddev-ddev-printenv
+  echo "# ddev get lullabot/ddev-printenv with project ${PROJNAME} in ${TESTDIR} ($(pwd))" >&3
+  ddev get lullabot/ddev-printenv
   ddev restart >/dev/null
   ddev printenv
   ddev printenv --obfuscate | grep -e '^COMPOSER_CACHE_DIR=oser$'
