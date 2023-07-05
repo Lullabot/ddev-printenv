@@ -41,6 +41,7 @@ jobs:
       run: echo "/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin" >> $GITHUB_PATH
     - name: Environment setup
       run: |
+        brew update && brew upgrade
         brew install bats-core mkcert
         mkcert -install
 
